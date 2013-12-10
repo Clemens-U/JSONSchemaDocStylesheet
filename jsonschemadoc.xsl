@@ -18,23 +18,34 @@
 		<xsl:value-of select="child::type/text()"/>
 	</xsl:template> -->
 	
-	<xsl:template match="*[count(child::type) = 1]">
+	<xsl:template match="*">
+		<p>Any node, name: <xsl:value-of select="name(.)"/></p>
+		<xsl:apply-templates  select="child::*"/>
+	</xsl:template>
+	
+	<!--<xsl:template match="*[count(child::type) = 1]">
+		<p>xsl_template match="*[count(child::type) = 1]</p>
+		
 		<xsl:if test="count(child::title) = 1">
-			<h3><xsl:value-of select="title"/></h3>
+			<p>Title: <xsl:value-of select="title"/></p>
 		</xsl:if>
 		
 		<xsl:if test="count(child::description) = 1">
 			<p>Description: <xsl:value-of select="description"/></p>
 		</xsl:if>
 		
-		<p>Type: <xsl:value-of select="child::type/text()"/></p>
+		<xsl:if test="count(child::description) = 1">
+			<p>Type: <xsl:value-of select="child::type/text()"/></p>
+		</xsl:if>
 		
 		<xsl:apply-templates/>
-	</xsl:template>
+	</xsl:template>-->
 	
 	<xsl:template match="properties">
-		<h3>Properties</h3>
 		<table border="1">
+			<tr>
+				<td colspan="2">Properties</td>
+			</tr>
 			<tr>
 				<td>Name</td><td>Schema</td>
 			</tr>
@@ -44,10 +55,32 @@
 						<xsl:value-of select="name(.)"/>
 					</td>
 					<td>
-						<xsl:apply-templates select="."/>
+						<xsl:for-each select="child::*">
+							<xsl:if test="count(child::title) = 1">
+								<p>Title: <xsl:value-of select="title"/></p>
+							</xsl:if>
+							
+							<xsl:if test="count(child::description) = 1">
+								<p>Description: <xsl:value-of select="description"/></p>
+							</xsl:if>
+							
+							<xsl:if test="count(child::description) = 1">
+								<p>Type: <xsl:value-of select="child::type/text()"/></p>
+							</xsl:if>
+							
+							<xsl:apply-templates/>
+						</xsl:for-each>
 					</td>
 				</tr>
 			</xsl:for-each>
 		</table>
 	</xsl:template>
+	
+	<xsl:template match="definitions">
+		<h3>Definitions</h3>
+		<xsl:for-each select="child::*">
+			<p>Name: <xsl:value-of select="name(.)"/></p>
+			<xsl:apply-templates  select="."/>
+		</xsl:for-each>
+	</xsl:template>	
 </xsl:stylesheet>
