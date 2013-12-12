@@ -1,0 +1,304 @@
+<html><style type="text/css">
+				.object-entry {
+					background-color:#FFD493;
+				}
+				
+				.array-entry {
+					background-color:#7FA5FF;
+				}
+
+				.simple-entry {
+					background-color:#BAFFD2;
+				}
+				
+				.table-std {
+					width:100%;
+					padding-left: 10px;
+					padding-right: 4px;
+					padding-bottom: 4px;
+				}
+			</style><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript">
+				function hide_structure_table()
+				{
+					var x = document.getElementById("structure_table");
+					x.style.display = "none";
+				}
+				function show_structure_table()
+				{
+					var x = document.getElementById('structure_table');
+					x.style.display = "";
+				}
+				function toggle_structure_table()
+				{
+					var x = document.getElementById('structure_table');
+					
+					if(x.style.display == "")
+						x.style.display = "none";
+					else
+						x.style.display = "";
+				}				
+				</script></head>
+   <body>
+      <h2>JSON Schema Documentation</h2>
+      <p>Description: An Address following the convention of http://microformats.org/wiki/hcard</p>
+      <div style="width:600px; resize:horizontal; overflow:auto">
+         <h3>Schema structure</h3><input type="button" value="Show/hide structure" onclick="toggle_structure_table()"><table class="table-std" id="structure_table">
+            <tr>
+               <td class="simple-entry">
+                  <table border="0" width="100%">
+                     <tr>
+                        <td>
+                           <div style="float: left;">post-office</div>
+                           <div style="float: right;">string</div>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+            <tr>
+               <td class="simple-entry">
+                  <table border="0" width="100%">
+                     <tr>
+                        <td>
+                           <div style="float: left;">extended-address</div>
+                           <div style="float: right;">string</div>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+            <tr>
+               <td class="simple-entry">
+                  <table border="0" width="100%">
+                     <tr>
+                        <td>
+                           <div style="float: left;">street-address</div>
+                           <div style="float: right;">string</div>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+            <tr>
+               <td class="simple-entry">
+                  <table border="0" width="100%">
+                     <tr>
+                        <td>
+                           <div style="float: left;">locality</div>
+                           <div style="float: right;">string</div>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+            <tr>
+               <td class="simple-entry">
+                  <table border="0" width="100%">
+                     <tr>
+                        <td>
+                           <div style="float: left;">region</div>
+                           <div style="float: right;">string</div>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+            <tr>
+               <td class="simple-entry">
+                  <table border="0" width="100%">
+                     <tr>
+                        <td>
+                           <div style="float: left;">postal-code</div>
+                           <div style="float: right;">string</div>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+            <tr>
+               <td class="simple-entry">
+                  <table border="0" width="100%">
+                     <tr>
+                        <td>
+                           <div style="float: left;">country-name</div>
+                           <div style="float: right;">string</div>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+            <tr>
+               <td class="object-entry">
+                  <table border="0" width="100%">
+                     <tr>
+                        <td>
+                           <div style="float: left;">test-object</div>
+                           <div style="float: right;">object</div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>A sub-schema for testing</td>
+                     </tr>
+                  </table>
+                  <table class="table-std">
+                     <tr>
+                        <td class="simple-entry">
+                           <table border="0" width="100%">
+                              <tr>
+                                 <td>
+                                    <div style="float: left;">prop1</div>
+                                    <div style="float: right;">string</div>
+                                 </td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="array-entry">
+                           <table border="0" width="100%">
+                              <tr>
+                                 <td>
+                                    <div style="float: left;">testarray</div>
+                                    <div style="float: right;">array</div>
+                                 </td>
+                              </tr>
+                           </table>
+                           <table class="table-std">
+                              <tr>
+                                 <td class="simple-entry">
+                                    <table border="0" width="100%">
+                                       <tr>
+                                          <td>
+                                             <div style="float: left;"></div>
+                                             <div style="float: right;">string</div>
+                                          </td>
+                                       </tr>
+                                    </table>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td class="simple-entry">
+                                    <table border="0" width="100%">
+                                       <tr>
+                                          <td>
+                                             <div style="float: left;">this item has a title</div>
+                                             <div style="float: right;">number</div>
+                                          </td>
+                                       </tr>
+                                    </table>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td class="object-entry">
+                                    <table border="0" width="100%">
+                                       <tr>
+                                          <td>
+                                             <div style="float: left;"></div>
+                                             <div style="float: right;">object</div>
+                                          </td>
+                                       </tr>
+                                    </table>
+                                    <table class="table-std">
+                                       <tr>
+                                          <td class="simple-entry">
+                                             <table border="0" width="100%">
+                                                <tr>
+                                                   <td>
+                                                      <div style="float: left;">a</div>
+                                                      <div style="float: right;">integer</div>
+                                                   </td>
+                                                </tr>
+                                             </table>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="simple-entry">
+                                             <table border="0" width="100%">
+                                                <tr>
+                                                   <td>
+                                                      <div style="float: left;">b</div>
+                                                      <div style="float: right;">string</div>
+                                                   </td>
+                                                </tr>
+                                             </table>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="array-entry">
+                                             <table border="0" width="100%">
+                                                <tr>
+                                                   <td>
+                                                      <div style="float: left;">subarray</div>
+                                                      <div style="float: right;">array</div>
+                                                   </td>
+                                                </tr>
+                                             </table>
+                                             <table class="table-std">
+                                                <tr>
+                                                   <td class="simple-entry">
+                                                      <table border="0" width="100%">
+                                                         <tr>
+                                                            <td>
+                                                               <div style="float: left;"></div>
+                                                               <div style="float: right;">integer</div>
+                                                            </td>
+                                                         </tr>
+                                                      </table>
+                                                   </td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="simple-entry">
+                                                      <table border="0" width="100%">
+                                                         <tr>
+                                                            <td>
+                                                               <div style="float: left;"></div>
+                                                               <div style="float: right;">string</div>
+                                                            </td>
+                                                         </tr>
+                                                      </table>
+                                                   </td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="simple-entry">
+                                                      <table border="0" width="100%">
+                                                         <tr>
+                                                            <td>
+                                                               <div style="float: left;"></div>
+                                                               <div style="float: right;">boolean</div>
+                                                            </td>
+                                                         </tr>
+                                                      </table>
+                                                   </td>
+                                                </tr>
+                                             </table>
+                                          </td>
+                                       </tr>
+                                    </table>
+                                 </td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="simple-entry">
+                           <table border="0" width="100%">
+                              <tr>
+                                 <td>
+                                    <div style="float: left;">property_end</div>
+                                    <div style="float: right;">boolean</div>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>a property at the end</td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>
