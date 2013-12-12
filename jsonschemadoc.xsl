@@ -22,16 +22,42 @@
 				
 				.table-std {
 					width:100%;
-					border: 10px white;
+					padding-left: 10px;
+					padding-right: 4px;
+					padding-bottom: 4px;
 				}
 			</style>
+			
+			<head>
+				<script type="text/javascript">
+				function hide_structure_table()
+				{
+					var x = document.getElementById("structure_table");
+					x.style.display = "none";
+				}
+				function show_structure_table()
+				{
+					var x = document.getElementById('structure_table');
+					x.style.display = "";
+				}
+				function toggle_structure_table()
+				{
+					var x = document.getElementById('structure_table');
+					
+					if(x.style.display == "")
+						x.style.display = "none";
+					else
+						x.style.display = "";
+				}				
+				</script>
+			</head>
 			
 			<body>
 				<h2>JSON Schema Documentation</h2>
 				
 				<p>Description: <xsl:value-of select="description/text()"/></p>
 				
-				<div style="width:500px">
+				<div style="width:600px; resize:horizontal; overflow:auto">
 					<xsl:call-template name="structure"/>
 				</div>
 			</body>
@@ -39,9 +65,9 @@
 	</xsl:template>
 	
 	<xsl:template name="structure">
-		<h3>Schema structure</h3>
+		<h3>Schema structure</h3><input type = "button" value="Show/hide structure" onclick = "toggle_structure_table()" />
 		
-		<table class="table-std">
+		<table class="table-std" id="structure_table">
 			<xsl:for-each select="child::*">
 				<xsl:apply-templates  select="." mode="structure"/>
 			</xsl:for-each>
@@ -91,7 +117,7 @@
 						</tr>
 						<xsl:if test="child::description">
 						<tr>
-							<td>Description: <xsl:value-of select="description/text()"/></td>
+							<td><xsl:value-of select="description/text()"/></td>
 						</tr>
 						</xsl:if>
 					</table>
@@ -124,18 +150,34 @@
 						</xsl:otherwise>					
 					</xsl:choose>
 					
-					<xsl:choose>
-						<xsl:when test="child::type">
-							<p><xsl:value-of select="type/text()"/></p>
-						</xsl:when>
-						<xsl:otherwise>
-							<p>Type not specified</p>
-						</xsl:otherwise>
-					</xsl:choose>
+					<table border="0" width="100%">
+						<tr>
+							<td>
+								<div style="float: left;">
+									<xsl:if test="child::title">
+										<xsl:value-of select="title/text()"/>
+									</xsl:if>
+								</div>
 					
-					<xsl:if test="child::description">
-						<p>Description: <xsl:value-of select="description/text()"/></p>
-					</xsl:if>
+								<div style="float: right;">
+									<xsl:choose>
+										<xsl:when test="child::type">
+											<xsl:value-of select="type/text()"/>
+										</xsl:when>
+										<xsl:otherwise>
+											Type not specified
+										</xsl:otherwise>
+									</xsl:choose>
+								</div>
+							</td>
+						</tr>
+						
+						<xsl:if test="child::description">
+						<tr>
+							<td><xsl:value-of select="description/text()"/></td>
+						</tr>
+						</xsl:if>
+					</table>
 				
 					<xsl:if test="child::type and ((child::type/text() = 'object') or (child::type/text() = 'array'))">
 						<table class="table-std">
