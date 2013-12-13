@@ -100,7 +100,15 @@
 						<tr>
 							<td>
 								<div style="float: left;">
-									<xsl:value-of select="name(.)"/>
+									<xsl:variable name="curr_name" select="name(.)"/>
+									<xsl:choose>
+										<xsl:when test="parent::*/parent::*/required and (parent::*/parent::*/required[text() = $curr_name])">
+											<strong><xsl:value-of select="name(.)"/></strong>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="name(.)"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</div>
 					
 								<div style="float: right;">
@@ -119,6 +127,22 @@
 						<tr>
 							<td><xsl:value-of select="description/text()"/></td>
 						</tr>
+						</xsl:if>
+						<xsl:if test="child::enum">
+							<tr>
+								<td>
+								<xsl:for-each select="child::enum">
+									<xsl:choose>
+										<xsl:when test="position() = last()">
+											<xsl:value-of select="text()"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="text()"/>,
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:for-each>
+								</td>
+							</tr>
 						</xsl:if>
 					</table>
 					
@@ -187,6 +211,9 @@
 				</xsl:if>
 			</td>
 		</tr>
+	</xsl:template>
+	
+	<xsl:template match="enum" mode="structure">
 	</xsl:template>
 	
 	<xsl:template match="properties" mode="definition">
