@@ -60,6 +60,8 @@
 				<div style="width:600px; resize:horizontal; overflow:auto">
 					<xsl:call-template name="structure"/>
 				</div>
+				
+				<xsl:call-template name="definitions"/>
 			</body>
 		</html>
 	</xsl:template>
@@ -202,7 +204,11 @@
 						</tr>
 						</xsl:if>
 					</table>
-				
+
+					<xsl:if test="child::oneOf">
+						<xsl:call-template name="oneof" select="child::oneOf" mode="structure"/>
+					</xsl:if>
+					
 					<xsl:if test="child::type and ((child::type/text() = 'object') or (child::type/text() = 'array'))">
 						<table class="table-std">
 							<xsl:apply-templates  select="child::*" mode="structure"/>
@@ -213,67 +219,47 @@
 		</tr>
 	</xsl:template>
 	
+	<xsl:template name="oneof" mode="structure">
+		<tr>
+			<xsl:for-each select="child::*">
+				<td>
+					<a>
+						<xsl:attribute name="href"><xsl:value-of select="text()"/>/<xsl:value-of select="count(ancestor::*) - 1"/></xsl:attribute>
+						<xsl:value-of select="text()"/>
+					</a>
+				</td>
+			</xsl:for-each>
+		</tr>
+	</xsl:template>
+	
 	<xsl:template match="enum" mode="structure">
 	</xsl:template>
 	
-	<xsl:template match="properties" mode="definition">
-		<tr>
-			<td colspan="2">Properties</td>
-		</tr>
-		<tr>
-			<td>Name</td><td>Schema</td>
-		</tr>
+	<xsl:template name="definitions">
+		<h3>Definitions</h3>
 		
+		<table border="0">
+			<xsl:for-each select="child::*">
+				<xsl:apply-templates  select="." mode="definitions"/>
+			</xsl:for-each>
+		</table>
+	</xsl:template>
+	
+	<xsl:template match="*" mode="definitions">
 		<xsl:for-each select="child::*">
+			<xsl:apply-templates select="." mode="definitions"/>
+		</xsl:for-each>
+	</xsl:template>
+	
+	<xsl:template match="definitions" mode="definitions">
+		<xsl:for-each select="child::*">
+		<!-- Each child in the definitions element is a single definition-->
 		<tr>
+			<xsl:attribute name="id">definitions/<xsl:value-of select="name(.)"/>/<xsl:value-of select="count(ancestor::*) - 1"/></xsl:attribute>
 			<td>
 				<xsl:value-of select="name(.)"/>
-			</td>
-			<td>
-				<table border="0">
-					<xsl:for-each select="child::*">
-						<xsl:apply-templates select="."/>
-					</xsl:for-each>
-				</table>
 			</td>
 		</tr>
 		</xsl:for-each>
 	</xsl:template>
-	
-	<xsl:template match="definitions" mode="definition">
-		<tr>
-			<td>
-				<h3>Definitions</h3>
-				<table border="0">
-					<xsl:for-each select="child::*">
-						<xsl:apply-templates  select="."/>
-					</xsl:for-each>
-				</table>
-			</td>
-		</tr>
-	</xsl:template>
-	
-	<xsl:template match="title">
-		<tr>
-			<td>
-				<p>Title: <xsl:value-of select="text()"/></p>
-			</td>
-		</tr>
-	</xsl:template>
-
-	<xsl:template match="description">
-		<tr>
-			<td>
-				<p>Description: <xsl:value-of select="text()"/></p>
-			</td>
-		</tr>
-	</xsl:template>
-
-	<xsl:template match="type" mode="definition">
-		<tr>
-			<td>
-				<p>Type: <xsl:value-of select="text()"/></p>
-			</td>
-		</tr>
-	</xsl:template>	
 </xsl:stylesheet>
