@@ -26,6 +26,17 @@
 					padding-right: 4px;
 					padding-bottom: 4px;
 				}
+				
+				.table-defs {
+					width:100%;
+					padding-left: 10px;
+					padding-right: 4px;
+					padding-bottom: 4px;
+				}
+				
+				.prop-info {
+					font-size: small
+				}
 			</style>
 			
 			<head>
@@ -55,19 +66,28 @@
 			<body>
 				<h2>JSON Schema Documentation</h2>
 				
-				<p>Description: <xsl:value-of select="description/text()"/></p>
+				<table border="0">
+					<tr><td>Description: <xsl:value-of select="description/text()"/></td></tr>
+					<tr><td>id: <xsl:value-of select="id/text()"/></td></tr>
+					<tr><td>$schema: <xsl:value-of select="schema/text()"/></td></tr>
+				</table>
 				
-				<div style="width:600px; resize:horizontal; overflow:auto">
+				<p></p>
+				
+				<div style="width:700px; resize:horizontal; overflow:auto">
 					<xsl:call-template name="structure"/>
 				</div>
 				
-				<xsl:call-template name="definitions"/>
+				<div style="width:500px; resize:horizontal; overflow:auto">
+					<xsl:call-template name="definitions"/>
+				</div>
 			</body>
 		</html>
 	</xsl:template>
 	
 	<xsl:template name="structure">
-		<h3>Schema structure</h3><input type = "button" value="Show/hide structure" onclick = "toggle_structure_table()" />
+		<h3>Schema structure</h3>
+		<!-- <input type = "button" value="Show/hide structure" onclick = "toggle_structure_table()" /> -->
 		
 		<table class="table-std" id="structure_table">
 			<xsl:for-each select="child::*">
@@ -125,14 +145,31 @@
 								</div>
 							</td>
 						</tr>
+						
 						<xsl:if test="child::description">
-						<tr>
-							<td><xsl:value-of select="description/text()"/></td>
-						</tr>
+							<tr>
+								<td class="prop-info"><xsl:value-of select="description/text()"/></td>
+							</tr>
 						</xsl:if>
+						
+						<xsl:if test="child::pattern">
+							<tr>
+								<td class="prop-info">
+									<div style="float: left;">
+										Pattern:
+									</div>
+						
+									<div style="float: right;">
+										<xsl:value-of select="pattern/text()"/>
+									</div>
+								</td>
+							</tr>
+						</xsl:if>
+						
 						<xsl:if test="child::enum">
 							<tr>
-								<td>
+								<td class="prop-info">
+								Enumeration:
 								<xsl:for-each select="child::enum">
 									<xsl:choose>
 										<xsl:when test="position() = last()">
@@ -146,6 +183,10 @@
 								</td>
 							</tr>
 						</xsl:if>
+						
+						<xsl:if test="child::oneOf">
+							<xsl:call-template name="oneOf"/>
+						</xsl:if>					
 					</table>
 					
 					<xsl:if test="./*">
@@ -200,14 +241,14 @@
 						
 						<xsl:if test="child::description">
 						<tr>
-							<td><xsl:value-of select="description/text()"/></td>
+							<td class="prop-info"><xsl:value-of select="description/text()"/></td>
 						</tr>
 						</xsl:if>
-					</table>
 
-					<xsl:if test="child::oneOf">
-						<xsl:call-template name="oneof" select="child::oneOf" mode="structure"/>
-					</xsl:if>
+						<xsl:if test="child::oneOf">
+							<xsl:call-template name="oneOf"/>
+						</xsl:if>
+					</table>
 					
 					<xsl:if test="child::type and ((child::type/text() = 'object') or (child::type/text() = 'array'))">
 						<table class="table-std">
@@ -219,16 +260,43 @@
 		</tr>
 	</xsl:template>
 	
-	<xsl:template name="oneof" mode="structure">
+	<xsl:template name="oneOf">
+		<tr><td>One of:</td></tr>
 		<tr>
-			<xsl:for-each select="child::*">
-				<td>
-					<a>
-						<xsl:attribute name="href"><xsl:value-of select="text()"/>/<xsl:value-of select="count(ancestor::*) - 1"/></xsl:attribute>
-						<xsl:value-of select="text()"/>
-					</a>
-				</td>
-			</xsl:for-each>
+			<td>
+				<table border="0" width="100%">
+					<tr>
+						<xsl:for-each select="child::oneOf">
+							<td>
+								<table class="table-std" id="structure_table">
+									<xsl:for-each select="child::*">
+										<xsl:apply-templates  select="." mode="structure"/>
+									</xsl:for-each>
+								</table>
+							</td>
+						</xsl:for-each>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</xsl:template>
+
+	<xsl:template match="ref" mode="structure">
+		<tr>
+			<td class="prop-info">
+				<a>
+					<xsl:attribute name="href">#<xsl:value-of select="substring(text(), 3)"/>/<xsl:value-of select="count(ancestor::*) - 3"/></xsl:attribute>
+					<xsl:value-of select="text()"/>
+				</a>
+			</td>
+		</tr>
+	</xsl:template>
+
+	<xsl:template match="format" mode="structure">
+		<tr>
+			<td class="prop-info">
+				Format: <xsl:value-of select="text()"/>
+			</td>
 		</tr>
 	</xsl:template>
 	
@@ -238,7 +306,7 @@
 	<xsl:template name="definitions">
 		<h3>Definitions</h3>
 		
-		<table border="0">
+		<table class="table-defs">
 			<xsl:for-each select="child::*">
 				<xsl:apply-templates  select="." mode="definitions"/>
 			</xsl:for-each>
@@ -258,6 +326,15 @@
 			<xsl:attribute name="id">definitions/<xsl:value-of select="name(.)"/>/<xsl:value-of select="count(ancestor::*) - 1"/></xsl:attribute>
 			<td>
 				<xsl:value-of select="name(.)"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table class="table-std" id="structure_table">
+					<xsl:for-each select="child::*">
+						<xsl:apply-templates  select="." mode="structure"/>
+					</xsl:for-each>
+				</table>
 			</td>
 		</tr>
 		</xsl:for-each>
